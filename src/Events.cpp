@@ -13,7 +13,7 @@ void Events::destroyWindow(xcb_generic_event_t* event) {
         return;
     }
 
-    if (Window* neighbour = windowManager->findNeighbour(window)) {
+    if (Window* neighbour = WindowManager::findNeighbour(window)) {
         WindowManager::chompWindow(neighbour, window);
         neighbour->dirty = true;
         windowManager->setFocusedWindow(neighbour->drawable);
