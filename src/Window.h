@@ -7,13 +7,15 @@
 
 class Window {
 public:
-    Window(const bool dirty, const bool floating, const xcb_drawable_t drawable) : dirty(dirty), floating(floating), drawable(drawable) {};
+    Window(const xcb_drawable_t drawable, const bool dirty, const bool floating) : drawable(drawable), dirty(dirty), floating(floating) {};
+
+    xcb_drawable_t drawable;
 
     bool dirty;
     bool floating;
     Vector2D size;
     Vector2D position;
-    xcb_drawable_t drawable;
+    double margin = 10;
 };
 
 

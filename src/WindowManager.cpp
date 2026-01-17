@@ -45,12 +45,17 @@ void WindowManager::handleDirtyWindows() {
             continue;
         }
 
-        windowManager->values[0] = static_cast<int>(window.size.x);
-        windowManager->values[1] = static_cast<int>(window.size.y);
+        const bool touchLeft = window.position.x == 0;
+        const bool touchRight = window.position.x + window.size.x == windowManager->screen->width_in_pixels;
+        const bool touchTop = window.position.y == 0;
+        const bool touchBottom = window.position.y + window.size.y == windowManager->screen->height_in_pixels;
+
+        windowManager->values[0] = static_cast<int>(touchLeft && touchRight ? window.size.x - window.margin * 2 : touchLeft || touchRight ? window.size.x - window.margin * 1.5f : window.size.x - window.margin);
+        windowManager->values[1] = static_cast<int>(touchTop && touchBottom ? window.size.y - window.margin * 2 : touchTop || touchBottom ? window.size.y - window.margin * 1.5f : window.size.y - window.margin);
         xcb_configure_window(windowManager->connection, window.drawable, XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT, windowManager->values);
 
-        windowManager->values[0] = static_cast<int>(window.position.x);
-        windowManager->values[1] = static_cast<int>(window.position.y);
+        windowManager->values[0] = static_cast<int>(touchLeft ? window.position.x + window.margin : window.position.x + window.margin / 2);
+        windowManager->values[1] = static_cast<int>(touchTop ? window.position.y + window.margin : window.position.y + window.margin / 2);
         xcb_configure_window(windowManager->connection, window.drawable, XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y, windowManager->values);
 
         window.dirty = false;

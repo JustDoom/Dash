@@ -36,7 +36,7 @@ void Events::mapWindow(xcb_generic_event_t* event) {
     // Map the window
     xcb_map_window(windowManager->connection, requestEvent->window);
 
-    Window window(true, false, requestEvent->window);
+    Window window(requestEvent->window, true, false);
 
     windowManager->setupNewWindow(&window);
     windowManager->addWindowToList(window);
